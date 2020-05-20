@@ -39,7 +39,12 @@ module.exports = Event.extend(function Base(container, config) {
   render: function (data, config) {
     data = this.data(data);
     var cfg = this.mergeConfig(config);
+    this.createrHtml(data);
 
+    //如果有需要的话,更新样式
+    this.updateStyle();
+  },
+  createrHtml:function(data){
     var html=`<div id="realTimeContentTable">`
       //table1
         html+=`<table class="table1">
@@ -117,7 +122,6 @@ module.exports = Event.extend(function Base(container, config) {
             }
 
             for(var i= data.length;i<12;i++){
-              console.log(i)
               if(data[0]["contentType"] == 1){
                 html+=`<tr><td></td><td></td><td></td><td></td></tr>`
               }else{
@@ -192,7 +196,6 @@ module.exports = Event.extend(function Base(container, config) {
             }
             if(data.length < 12){
               for(var i= 0;i<12;i++){
-                console.log(i)
                 if(data[0]["contentType"] == 1){
                   html+=`<tr><td></td><td></td><td></td><td></td></tr>`
                 }else{
@@ -201,7 +204,6 @@ module.exports = Event.extend(function Base(container, config) {
               }
             }else{
               for(var i= data.length;i<25;i++){
-                console.log(i)
                 if(data[0]["contentType"] == 1){
                   html+=`<tr><td></td><td></td><td></td><td></td></tr>`
                 }else{
@@ -214,20 +216,13 @@ module.exports = Event.extend(function Base(container, config) {
           html+=`</<tbody></table>` 
 
         html+=`</div>`
-    
-    //更新图表
-    //this.chart.render(data, cfg);
-   
-    this.container.html(html)
-    //图表1执行
-    this.tableOneEvent(data); 
-
-    //如果有需要的话,更新样式
-    this.updateStyle();
+        this.container.html(html);
+        //图表1执行
+        this.tableOneEvent(data,-1); 
   },
-
   tableOneEvent:function(data,arriver){
-    console.log(arriver)
+    window.clearInterval(time1);
+    console.log(time1)
     let that = this;
     let trlength = $("#realTimeContentTable .table1 tbody .haveData").length;
     let index = 0;
@@ -256,6 +251,8 @@ module.exports = Event.extend(function Base(container, config) {
   },
 
   tableTwoEvent:function(data,arriver){
+    window.clearInterval(time2);
+    console.log(time2)
     let that = this;
     let trlength = $("#realTimeContentTable .table2 tbody .haveData").length;
     let index = 0;
